@@ -4,7 +4,12 @@ var items = [
     ['green', 'green', 'yellow']
 ];
 
-var risksInput = [[1,2,3],[2,1,3],[3,1,3]];
+var risksInput = [[1,1,3],[2,1,3],[3,1,3],[4,1,3],[5,1,3],[6,1,3],[7,1,3],[8,1,3],[9,1,3],[10,1,3],[11,1,3],[12,1,3],[13,1,3],
+    [1,1,2],[2,1,2],[3,1,2],[4,1,2],[5,1,2],[6,1,2],[7,1,2],[8,1,2],
+    [1,2,1],[2,2,1],
+    [1,2,2],[2,2,2],[3,2,2],[4,2,2],[5,2,2],
+    [1,1,1],[2,1,1],[3,1,1]];
+//var risksInput = [[1,1,3],[2,1,3],[3,1,3],[4,1,3],[5,1,3],[6,1,3],[7,1,3],[8,1,3]];
 
 var inputLikelihood;
 var inputConsequence;
@@ -33,6 +38,7 @@ function setup() {
     inputConsequence.position(120, 120);
     inputConsequence.size(15);
 
+
     inputLikelihood.input(drawMatrix);
     inputConsequence.input(drawMatrix);
 //    risks.push(new Risk(1,2,3));
@@ -46,6 +52,7 @@ function setup() {
 
 function drawMatrix(){
     clear();
+    line(offsetXMatrix -20, offsetYMatrix, offsetXMatrix -20, offsetYMatrix + sizeYMatrix);
     var partitionsLikelihood = parseInt(inputLikelihood.value());
     var Partitionsconsequence = parseInt(inputConsequence.value());
     //console.log('partitionsLikelihood: ', partitionsLikelihood);
