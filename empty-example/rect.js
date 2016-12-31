@@ -7,11 +7,30 @@ function Rect(x, y, width, height, color){
     this.width = width;
     this.height = height;
     this.color = color;
+    var riskObjectArray = [];
+    this.r = 10;
 
     this.show = function(){
         push();
         fill(this.color);
         rect(this.x , this.y, this.width, this.height);
         pop();
-    }
+    };
+
+    this.addRisk = function(risk){
+        riskObjectArray.push(risk);
+    };
+
+    this.renderRisks = function(){
+        for (var i = 0; i < riskObjectArray.length; i++){
+            //Wrong place, should be inside risk object
+            var xPosition = this.x + width / (riskObjectArray.length+ 1) * (i + 1);
+            var yPosition = this.y +  height / 2;
+            push();
+            ellipse(xPosition,yPosition, this.r * 2)
+            textAlign(CENTER,CENTER);
+            text(riskObjectArray[i][0],xPosition,yPosition);
+            pop();
+        }
+    };
 }

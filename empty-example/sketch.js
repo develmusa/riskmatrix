@@ -4,13 +4,7 @@ var items = [
     ['green', 'green', 'yellow']
 ];
 
-var rectSize = 100;
-
 var risksInput = [[1,2,3],[2,1,3],[3,1,3]];
-
-var risks = [];
-
-
 
 var inputLikelihood;
 var inputConsequence;
@@ -20,6 +14,7 @@ var offsetXMatrix = 100;
 var offsetYMatrix = 150;
 var sizeXMatrix = 400;
 var sizeYMatrix = 400;
+var rectArray;
 
 function setup() {
     createCanvas(600, 600);
@@ -40,9 +35,12 @@ function setup() {
 
     inputLikelihood.input(drawMatrix);
     inputConsequence.input(drawMatrix);
-    risks.push(new Risk(1,2,3));
+//    risks.push(new Risk(1,2,3));
     drawMatrix();
     populateMatrix();
+    showRisks();
+
+
 
 }
 
@@ -50,30 +48,42 @@ function drawMatrix(){
     clear();
     var partitionsLikelihood = parseInt(inputLikelihood.value());
     var Partitionsconsequence = parseInt(inputConsequence.value());
-    console.log('partitionsLikelihood: ', partitionsLikelihood);
-    console.log('Partitionsconsequence: ', Partitionsconsequence);
-    var rectArray=new Array(partitionsLikelihood);
+    //console.log('partitionsLikelihood: ', partitionsLikelihood);
+    //console.log('Partitionsconsequence: ', Partitionsconsequence);
+    rectArray=new Array(partitionsLikelihood);
     for (var i=0; i < partitionsLikelihood; i++) {
         rectArray[i] = new Array(Partitionsconsequence);
     }
     for(var i = 0; i < rectArray.length; i++){
         for(var j = 0; j < rectArray[i].length; j++) {
-            var rectangle = new Rect(offsetXMatrix + sizeXMatrix / partitionsLikelihood *i , offsetYMatrix + sizeYMatrix / Partitionsconsequence * j, sizeXMatrix / partitionsLikelihood  , sizeYMatrix / Partitionsconsequence , 'yellow');
-            rectangle.show();
-            console.log('partitionsLikelihood: ', i, 'Partitionsconsequence: ', j);
+            rectArray[i][j] = new Rect(offsetXMatrix + sizeXMatrix / partitionsLikelihood *i , offsetYMatrix + sizeYMatrix / Partitionsconsequence * j, sizeXMatrix / partitionsLikelihood  , sizeYMatrix / Partitionsconsequence , 'white');
+            rectArray[i][j].show();
+            //console.log('partitionsLikelihood: ', i, 'Partitionsconsequence: ', j);
         }
     }
 }
-
 function populateMatrix(){
+    for (var i = 0; i < risksInput.length; i++){
+        var likelihood = risksInput[i][1] -1;
+        var consequence = risksInput[i][2] -1;
+        rectArray[likelihood][consequence].addRisk(risksInput[i]);
+    }
 
+}
+
+function showRisks(){
+    for(var i = 0; i < rectArray.length; i++) {
+        for (var j = 0; j < rectArray[i].length; j++) {
+            rectArray[i][j].renderRisks();
+        }
+    }
 }
 
 
 function draw() {
     //background(slider.value());
 
-    for (var i = 0; i < risks.length; i++){
-        risks[i].render();
-    }
+ //   for (var i = 0; i < risks.length; i++){
+  //      risks[i].render();
+
 }
