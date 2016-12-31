@@ -9,7 +9,6 @@ var risksInput = [[1,1,3],[2,1,3],[3,1,3],[4,1,3],[5,1,3],[6,1,3],[7,1,3],[8,1,3
     [1,2,1],[2,2,1],
     [1,2,2],[2,2,2],[3,2,2],[4,2,2],[5,2,2],
     [1,1,1],[2,1,1],[3,1,1]];
-//var risksInput = [[1,1,3],[2,1,3],[3,1,3],[4,1,3],[5,1,3],[6,1,3],[7,1,3],[8,1,3]];
 
 var inputLikelihood;
 var inputConsequence;
@@ -20,6 +19,9 @@ var offsetYMatrix = 150;
 var sizeXMatrix = 400;
 var sizeYMatrix = 400;
 var rectArray;
+var marginDescriptionVector = 20;
+var arrowLength = 20;
+var arrowThickness = 10;
 
 function setup() {
     createCanvas(600, 600);
@@ -52,7 +54,7 @@ function setup() {
 
 function drawMatrix(){
     clear();
-    line(offsetXMatrix -20, offsetYMatrix, offsetXMatrix -20, offsetYMatrix + sizeYMatrix);
+    drawDescriptionVector();
     var partitionsLikelihood = parseInt(inputLikelihood.value());
     var Partitionsconsequence = parseInt(inputConsequence.value());
     //console.log('partitionsLikelihood: ', partitionsLikelihood);
@@ -68,6 +70,21 @@ function drawMatrix(){
             //console.log('partitionsLikelihood: ', i, 'Partitionsconsequence: ', j);
         }
     }
+}
+
+function drawDescriptionVector(){
+    var startPointVertical = createVector(offsetXMatrix -marginDescriptionVector, offsetYMatrix);
+    var endPointVertical = createVector(offsetXMatrix -marginDescriptionVector, offsetYMatrix + sizeYMatrix);
+    var endPointHorizontal= createVector(offsetXMatrix + sizeXMatrix , offsetYMatrix + sizeYMatrix + marginDescriptionVector);
+    var startPointHorizontal = createVector(offsetXMatrix, offsetYMatrix + sizeYMatrix + marginDescriptionVector);
+    push();
+    line(startPointVertical.x, startPointVertical.y, endPointVertical.x, endPointVertical.y);
+    line(startPointHorizontal.x , startPointHorizontal.y, endPointHorizontal.x, endPointHorizontal.y);
+    fill('black');
+    triangle(startPointVertical.x,startPointVertical.y,startPointVertical.x - arrowThickness/2,startPointVertical.y+arrowLength,startPointVertical.x+ arrowThickness/2,startPointVertical.y+arrowLength);
+    triangle(endPointHorizontal.x,endPointHorizontal.y,endPointHorizontal.x - arrowLength,endPointHorizontal.y - arrowThickness/2,endPointHorizontal.x - arrowLength,endPointHorizontal.y + arrowThickness/2);
+    pop();
+
 }
 function populateMatrix(){
     for (var i = 0; i < risksInput.length; i++){

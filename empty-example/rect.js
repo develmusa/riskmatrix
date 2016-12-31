@@ -28,17 +28,8 @@ function Rect(x, y, width, height, color){
             var yCount = Math.round(Math.sqrt(riskObjectArray.length));
             var xNr = i % xCount + 1;
             var yNr = Math.floor(i / xCount)+1;
-
             var xPosition = this.x + (width / (xCount+1) * xNr);
             var yPosition = this.y + (height / (yCount+1) * yNr);
-            console.log("Number",riskObjectArray[i][0]);
-            console.log("xCount: ", xCount ,"    yCount: ", yCount);
-            console.log("xNr: ", xNr, "     yNr", yNr);
-            console.log("xPosition", xPosition,"    yPosition", yPosition);
-            console.log("");
-// Math.ceil(Math.sqrt(riskObjectArray.length + 1) * (i + 1))
-            //var xPosition = this.x + width / (riskObjectArray.length+ 1) * (i + 1);
-            //var yPosition = this.y +  height / 2;
             push();
             ellipse(xPosition,yPosition, this.r * 2);
             textSize(15);

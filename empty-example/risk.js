@@ -10,8 +10,8 @@ function Risk(nr, likelihood, consequence){
     var c = color(0,random(100,255),random(0,100));
 
     this.setPosition = function (){
-        this.pos =
-    }
+
+    };
 
     this.render = function(){
         push();
