@@ -1,16 +1,17 @@
-function setup() {
-    createCanvas(1000, 1000);
-    var rectangle = new Rect(100, 100, 100, 100, 'yellow');
-    rectangle.show();
-
-
-}
-
 var items = [
     ['yellow', 'red', 'red'],
     ['green', 'yellow', 'red'],
     ['green', 'green', 'yellow']
 ];
+
+var rectSize = 100;
+
+var risks = [];
+
+function setup() {
+    createCanvas(400, 400);
+    risks.push(new Risk());
+}
 
 
 
@@ -22,16 +23,12 @@ function draw() {
 
       for(var i = 0; i < rectArray.length; i++){
           for(var j = 0; j < rectArray.length; j++) {
-              var rectangle = new Rect(100 *i , 100 * j, 100, 100, items[j][i].toString());
+              var rectangle = new Rect(rectSize *i , rectSize * j, rectSize , rectSize , items[j][i].toString());
               rectangle.show();
           }
+    }
 
-  //  for(var i = 0; i < items.length; i++){
-        //      for(var j = 0; j < items[i].length; j++) {
-//
-//            fill(items[j][i].toString());
-  //          rect(100 *i , 100 * j, 100, 100);
-  //          console.log(items[j][i]);
-//        }
+    for (var i = 0; i < risks.length; i++){
+        risks[i].render();
     }
 }
