@@ -8,7 +8,7 @@ function Rect(x, y, width, height, color){
     this.height = height;
     this.color = color;
     var riskObjectArray = [];
-    this.r = 10;
+    this.r = 20;
 
     this.show = function(){
         push();
@@ -27,7 +27,8 @@ function Rect(x, y, width, height, color){
             var xPosition = this.x + width / (riskObjectArray.length+ 1) * (i + 1);
             var yPosition = this.y +  height / 2;
             push();
-            ellipse(xPosition,yPosition, this.r * 2)
+            ellipse(xPosition,yPosition, this.r * 2);
+            textSize(15);
             textAlign(CENTER,CENTER);
             text(riskObjectArray[i][0],xPosition,yPosition);
             pop();
