@@ -22,6 +22,7 @@ var rectArray;
 var marginDescriptionVector = 20;
 var arrowLength = 20;
 var arrowThickness = 10;
+var arrowDescriptionMargin = 20;
 
 function setup() {
     createCanvas(600, 600);
@@ -83,6 +84,12 @@ function drawDescriptionVector(){
     fill('black');
     triangle(startPointVertical.x,startPointVertical.y,startPointVertical.x - arrowThickness/2,startPointVertical.y+arrowLength,startPointVertical.x+ arrowThickness/2,startPointVertical.y+arrowLength);
     triangle(endPointHorizontal.x,endPointHorizontal.y,endPointHorizontal.x - arrowLength,endPointHorizontal.y - arrowThickness/2,endPointHorizontal.x - arrowLength,endPointHorizontal.y + arrowThickness/2);
+    textSize(15);
+    textAlign(CENTER,CENTER);
+    text("Consequence",startPointHorizontal.x+(endPointHorizontal.x-startPointHorizontal.x)/2,arrowDescriptionMargin + startPointHorizontal.y + (endPointHorizontal.y-startPointHorizontal.y)/2);
+    translate(startPointVertical.x- arrowDescriptionMargin +(endPointVertical.x-startPointVertical.x)/2,startPointVertical.y + (endPointVertical.y-startPointVertical.y)/2);
+    rotate(radians(90));
+    text("Likelihood",0,0);
     pop();
 
 }
