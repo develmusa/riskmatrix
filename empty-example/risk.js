@@ -1,7 +1,10 @@
 /**
  * Created by samuel on 30.12.16.
  */
-function Risk(){
+function Risk(nr, likelihood, consequence){
+    this.nr = nr;
+    this.likelihood = likelihood;
+    this.consequence = consequence;
     this.pos = createVector(random(width), random(height));
     this.r = 50;
     var c = color(0,random(100,255),random(0,100));
