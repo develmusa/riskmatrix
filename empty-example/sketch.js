@@ -23,6 +23,8 @@ var marginDescriptionVector = 20;
 var arrowLength = 20;
 var arrowThickness = 10;
 var arrowDescriptionMargin = 20;
+var sliderUpperBorder, sliderLowerBorder, sliderRiskSize;
+
 
 function setup() {
     createCanvas(600, 600);
@@ -41,36 +43,80 @@ function setup() {
     inputConsequence.position(120, 120);
     inputConsequence.size(15);
 
+    sliderUpperBorder = createSlider(-1000, +1000, -sizeYMatrix);
+    sliderUpperBorder.position(250, 25);
 
-    inputLikelihood.input(drawMatrix);
-    inputConsequence.input(drawMatrix);
-//    risks.push(new Risk(1,2,3));
-    drawMatrix();
-    populateMatrix();
-    showRisks();
+    sliderLowerBorder = createSlider(-1000, +1000, -sizeYMatrix);
+    sliderLowerBorder.position(250, 50);
+
+    sliderRiskSize = createSlider(1, 100, 20);
+    sliderRiskSize.position(250, 75);
+
+    sliderUpperBorder.input(drawAll);
+    sliderLowerBorder.input(drawAll);
+    sliderRiskSize.input(drawAll);
+
+    inputLikelihood.input(drawAll);
+    inputConsequence.input(drawAll);
+    drawAll()
 
 
 
 }
 
+function drawAll(){
+    drawMatrix();
+    populateMatrix();
+    showRisks();
+}
+
 function drawMatrix(){
     clear();
     drawDescriptionVector();
+    push();
     var partitionsLikelihood = parseInt(inputLikelihood.value());
     var Partitionsconsequence = parseInt(inputConsequence.value());
-    //console.log('partitionsLikelihood: ', partitionsLikelihood);
-    //console.log('Partitionsconsequence: ', Partitionsconsequence);
+    //set cordinatas(0,0) in the left bottom edge of the graph
+    translate(offsetXMatrix, offsetYMatrix + sizeYMatrix);
+    var yInterceptUpper= -sliderUpperBorder.value();
+    var yInterceptLower= -sliderLowerBorder.value();
+    var slope = -(0-sizeYMatrix/sizeXMatrix-0);
+    var xRectangle;
+    var yRectangle;
+    var widthRectangle;
+    var heightRectangle;
+    var colorRectangle;
+
+
     rectArray=new Array(partitionsLikelihood);
     for (var i=0; i < partitionsLikelihood; i++) {
         rectArray[i] = new Array(Partitionsconsequence);
     }
     for(var i = 0; i < rectArray.length; i++){
         for(var j = 0; j < rectArray[i].length; j++) {
-            rectArray[i][j] = new Rect(offsetXMatrix + sizeXMatrix / partitionsLikelihood *i , offsetYMatrix + sizeYMatrix / Partitionsconsequence * j, sizeXMatrix / partitionsLikelihood  , sizeYMatrix / Partitionsconsequence , 'white');
+            xRectangle = sizeXMatrix / partitionsLikelihood *i;
+            yRectangle = sizeYMatrix / Partitionsconsequence * j - sizeYMatrix;
+            widthRectangle = sizeXMatrix / partitionsLikelihood;
+            heightRectangle = sizeYMatrix / Partitionsconsequence;
+
+            if((yRectangle-widthRectangle/2)< (slope*(xRectangle-heightRectangle/2)+yInterceptUpper)) {
+                colorRectangle = 'red';
+            }else if((yRectangle-widthRectangle/2) > (slope*(xRectangle-heightRectangle/2)+yInterceptUpper) && (yRectangle-widthRectangle/2)< (slope*(xRectangle-heightRectangle/2)+yInterceptLower) ){
+                colorRectangle = 'yellow';
+            } else {
+                colorRectangle = 'green';
+            }
+
+            rectArray[i][j] = new Rect(xRectangle ,yRectangle, widthRectangle  , heightRectangle , colorRectangle);
             rectArray[i][j].show();
             //console.log('partitionsLikelihood: ', i, 'Partitionsconsequence: ', j);
         }
     }
+
+    line(0,slope*0+yInterceptUpper,sizeXMatrix,slope*sizeXMatrix+yInterceptUpper);
+    line(0,slope*0+yInterceptLower,sizeXMatrix,slope*sizeXMatrix+yInterceptLower);
+    pop();
+
 }
 
 function drawDescriptionVector(){
@@ -110,11 +156,14 @@ function showRisks(){
     }
 }
 
-
+function test(){
+    console.log("test");
+}
 function draw() {
-    //background(slider.value());
 
- //   for (var i = 0; i < risks.length; i++){
-  //      risks[i].render();
+    if(sliderUpperBorder.value() < sliderLowerBorder.value()) {
+        sliderLowerBorder.value(sliderUpperBorder.value());
+    }
+
 
 }

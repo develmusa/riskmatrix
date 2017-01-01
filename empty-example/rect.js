@@ -24,6 +24,7 @@ function Rect(x, y, width, height, color){
     this.renderRisks = function(){
         for (var i = 0; i < riskObjectArray.length; i++){
             //Wrong place, should be inside risk object
+
             var xCount = Math.ceil(Math.sqrt(riskObjectArray.length));
             var yCount = Math.round(Math.sqrt(riskObjectArray.length));
             var xNr = i % xCount + 1;
@@ -31,7 +32,11 @@ function Rect(x, y, width, height, color){
             var xPosition = this.x + (width / (xCount+1) * xNr);
             var yPosition = this.y + (height / (yCount+1) * yNr);
             push();
-            ellipse(xPosition,yPosition, this.r * 2);
+            translate(offsetXMatrix, offsetYMatrix + sizeYMatrix);
+            //ellipse(xPosition,yPosition, this.r * 2);
+            fill('lightgray')
+            ellipse(xPosition,yPosition, sliderRiskSize.value());
+            fill('black');
             textSize(15);
             textAlign(CENTER,CENTER);
             text(riskObjectArray[i][0],xPosition,yPosition);
