@@ -4,6 +4,8 @@ var items = [
     ['green', 'green', 'yellow']
 ];
 
+
+
 var risksInput = [[1,1,3],[2,1,3],[3,1,3],[4,1,3],[5,1,3],[6,1,3],[7,1,3],[8,1,3],[9,1,3],[10,1,3],[11,1,3],[12,1,3],[13,1,3],
     [1,1,2],[2,1,2],[3,1,2],[4,1,2],[5,1,2],[6,1,2],[7,1,2],[8,1,2],
     [1,2,1],[2,2,1],
@@ -58,6 +60,7 @@ function setup() {
 
     inputLikelihood.input(drawAll);
     inputConsequence.input(drawAll);
+    createGUI();
     drawAll()
 
 
@@ -68,6 +71,31 @@ function drawAll(){
     drawMatrix();
     populateMatrix();
     showRisks();
+}
+
+var FizzyText = function() {
+    this.message = 'dat.gui';
+    this.speed = 0.8;
+    this.displayOutline = false;
+};
+
+
+function createGUI(){
+    var gui = new dat.GUI();
+
+    var keys = {
+        "arrowThickness": arrowThickness,
+    };
+
+    var f1 = gui.addFolder("Matrix");
+    var f2 = gui.addFolder("Risks");
+
+    var controller = f1.add(keys, "arrowThickness", 0, 50).step(1);
+    controller.onFinishChange(function (value) {
+        console.log(value);
+        arrowThickness = value;
+    });
+
 }
 
 function drawMatrix(){
@@ -156,14 +184,12 @@ function showRisks(){
     }
 }
 
-function test(){
-    console.log("test");
-}
 function draw() {
 
     if(sliderUpperBorder.value() < sliderLowerBorder.value()) {
         sliderLowerBorder.value(sliderUpperBorder.value());
     }
+    drawAll();
 
 
 }
