@@ -1,11 +1,3 @@
-var items = [
-    ['yellow', 'red', 'red'],
-    ['green', 'yellow', 'red'],
-    ['green', 'green', 'yellow']
-];
-
-
-
 var risksInput = [[1,1,3],[2,1,3],[3,1,3],[4,1,3],[5,1,3],[6,1,3],[7,1,3],[8,1,3],[9,1,3],[10,1,3],[11,1,3],[12,1,3],[13,1,3],
     [1,1,2],[2,1,2],[3,1,2],[4,1,2],[5,1,2],[6,1,2],[7,1,2],[8,1,2],
     [1,2,1],[2,2,1],
@@ -28,10 +20,15 @@ var arrowDescriptionMargin = 20;
 var descriptionSize = 15;
 var sliderUpperBorder, sliderLowerBorder, sliderRiskSize;
 var gui;
+var riskColor = 'lightgray';
+var riskTextColor = 'black';
+var riskSize = 40;
+var riskTextSize = 15;
+var riskArray = [];
 
 
 function setup() {
-    createCanvas(600, 600);
+    var canvas = createCanvas(600, 600);
     elementPartition= createElement('h2', 'Partition Count:');
     elementPartition.position(20, 5);
 
@@ -71,16 +68,10 @@ function setup() {
 
 function drawAll(){
     drawMatrix();
-    populateMatrix();
+    generateRisks();
+    mapRisksToRectangles();
     showRisks();
 }
-
-var FizzyText = function() {
-    this.message = 'dat.gui';
-    this.speed = 0.8;
-    this.displayOutline = false;
-};
-
 
 function drawMatrix(){
     clear();
@@ -151,11 +142,18 @@ function drawDescriptionVector(){
     pop();
 
 }
-function populateMatrix(){
+function generateRisks(){
     for (var i = 0; i < risksInput.length; i++){
-        var likelihood = risksInput[i][1] -1;
-        var consequence = risksInput[i][2] -1;
-        rectArray[likelihood][consequence].addRisk(risksInput[i]);
+        riskArray[i] = new Risk(risksInput[i][0],risksInput[i][1],risksInput[i][2])
+    }
+
+}
+
+function mapRisksToRectangles(){
+    for (var i = 0; i < riskArray.length; i++){
+        var likelihood = riskArray[i].likelihood -1;
+        var consequence = riskArray[i].consequence -1;
+        rectArray[likelihood][consequence].addRisk(riskArray[i]);
     }
 
 }
@@ -174,6 +172,6 @@ function draw() {
         sliderLowerBorder.value(sliderUpperBorder.value());
     }
     drawAll();
-
-
 }
+
+//saveCanvas('myCanvas', 'png');

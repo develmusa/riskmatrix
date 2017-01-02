@@ -5,19 +5,21 @@ function Risk(nr, likelihood, consequence){
     this.nr = nr;
     this.likelihood = likelihood;
     this.consequence = consequence;
-    this.pos = createVector(random(width), random(height));
-    this.r = 50;
-    var c = color(0,random(100,255),random(0,100));
+    this.pos = createVector();
 
-    this.setPosition = function (){
-
+    this.setPosition = function (x, y){
+        this.pos.x = x;
+        this.pos.y = y;
     };
 
     this.render = function(){
         push();
-        translate(this.pos.x, this.pos.y);
-        fill(c);
-        ellipse(0,0, this.r * 2)
+        fill(riskColor)
+        ellipse(this.pos.x, this.pos.y, riskSize);
+        fill(riskTextColor);
+        textSize(riskTextSize);
+        textAlign(CENTER,CENTER);
+        text(this.nr,this.pos.x, this.pos.y);
         pop();
     }
 }
