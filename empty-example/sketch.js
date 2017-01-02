@@ -1,3 +1,6 @@
+var sketchContainer = "sketch";
+var guiContainer = "sketch-gui";
+
 var risksInput = [[1,1,3],[2,1,3],[3,1,3],[4,1,3],[5,1,3],[6,1,3],[7,1,3],[8,1,3],[9,1,3],[10,1,3],[11,1,3],[12,1,3],[13,1,3],
     [1,1,2],[2,1,2],[3,1,2],[4,1,2],[5,1,2],[6,1,2],[7,1,2],[8,1,2],
     [1,2,1],[2,2,1],
@@ -9,7 +12,7 @@ var inputConsequence = 3;
 var elementPartition, elementLikelihood, elementConsequence;
 var table;
 var offsetXMatrix = 100;
-var offsetYMatrix = 150;
+var offsetYMatrix = 100;
 var sizeXMatrix = 600;
 var sizeYMatrix = 600;
 var rectArray;
@@ -18,7 +21,7 @@ var arrowLength = 20;
 var arrowThickness = 10;
 var arrowDescriptionMargin = 20;
 var descriptionSize = 15;
-var upperBorder, lowerBorder;
+
 var gui;
 var riskColor = "#969696";
 var riskTextColor = '#000000';
@@ -30,37 +33,42 @@ var yInterceptUpper;
 
 var yInterceptLower;
 
-var yInterceptMax;
+var slope = -(0-sizeYMatrix/sizeXMatrix-0);
 
-var slope;
+var yInterceptMax = -sizeYMatrix - sizeXMatrix*slope;
+
+var upperBorder = yInterceptMax / 5 * -3;
+var lowerBorder = yInterceptMax / 5 * -2;
 
 var upperSectionColor = "#ff0000";
 var middleSectionColor = "#ffff00";
 var lowerSectionColor = "#00ff00";
-var canvas
+var canvas;
+var canvasSize;
+
+function setCanvasSize(){
+    if (window.innerWidth < window.innerHeight){
+        canvasSize = window.innerWidth;
+    } else {
+        canvasSize = window.innerHeight
+    }
+}
 
 function setup() {
-
-    canvas = createCanvas(800, 800);
-
+    setCanvasSize();
+    canvas = createCanvas(canvasSize,canvasSize);
     /*
       elementPartition= createElement('h2', 'Partition Count:');
     elementPartition.position(20, 5);
     */
 
-
-    upperBorder = 0;
-
-    lowerBorder = 0;
-
-
     gui = new GUI();
-
-
     drawAll();
+}
 
-
-
+function windowResized() {
+    setCanvasSize();
+    resizeCanvas(canvasSize,canvasSize);
 }
 
 function drawAll(){
@@ -74,6 +82,7 @@ function drawMatrix(){
     clear();
     drawDescriptionVector();
     push();
+
     var partitionsLikelihood = parseInt(inputLikelihood);
     var Partitionsconsequence = parseInt(inputConsequence);
     //set cordinatas(0,0) in the left bottom edge of the graph
@@ -118,8 +127,8 @@ function drawMatrix(){
         }
     }
 
-    line(0,slope*0-yInterceptUpper,sizeXMatrix,slope*sizeXMatrix-yInterceptUpper);
-    line(0,slope*0-yInterceptLower,sizeXMatrix,slope*sizeXMatrix-yInterceptLower);
+    //line(0,slope*0-yInterceptUpper,sizeXMatrix,slope*sizeXMatrix-yInterceptUpper);
+    //line(0,slope*0-yInterceptLower,sizeXMatrix,slope*sizeXMatrix-yInterceptLower);
     pop();
 
 }
@@ -169,11 +178,10 @@ function showRisks(){
 }
 
 function draw() {
-/*
-    if(upperBorder.value() < lowerBorder.value()) {
-        lowerBorder.value(upperBorder.value());
-    }*/
+
     drawAll();
+    //background(0, 100, 200);
+
 }
 
 function saveMatrix(){

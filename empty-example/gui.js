@@ -4,6 +4,12 @@
 function GUI(){
     this.gui = new dat.GUI();
 
+
+    var matrixKeys = {
+        "Divisions Likelihood": inputLikelihood,
+        "Divisions Consequence": inputConsequence
+    };
+
     var riskSectionKeys = {
         "Upper Border": upperBorder,
         "Lower Border": lowerBorder,
@@ -11,8 +17,6 @@ function GUI(){
         "Middle Section Color": middleSectionColor,
         "Lower Section Color": lowerSectionColor
     };
-    
-    
 
     var descriptionKeys = {
         "Arrow Thickness": arrowThickness,
@@ -29,12 +33,23 @@ function GUI(){
         "Text Color": riskTextColor
     };
 
+    var controller;
     var f1 = this.gui.addFolder("Matrix");
     var f1_1 = f1.addFolder("Description Vector");
     var f1_2 = f1.addFolder("Risk Section");
     var f2 = this.gui.addFolder("Risk");
 
 
+    //Matrix
+    controller = f1.add(matrixKeys, "Divisions Likelihood", 0, 10).step(1);
+    controller.onFinishChange(function (value) {
+        inputLikelihood = value;
+    });
+
+    controller = f1.add(matrixKeys, "Divisions Consequence", 0, 10).step(1);
+    controller.onFinishChange(function (value) {
+        inputConsequence = value;
+    });
 
     //Description Vector
     controller = f1_1.add(descriptionKeys, "Arrow Thickness", 0, 50).step(1);
@@ -59,7 +74,7 @@ function GUI(){
     });
 
     //Risk Section
-    var controller = f1_2.add(riskSectionKeys, "Upper Border", 0, 1000).step(1).listen();
+    controller = f1_2.add(riskSectionKeys, "Upper Border", 0, 1000).step(1).listen();
     controller.onFinishChange(function (value) {
         upperBorder = value;
         if (lowerBorder > upperBorder)
@@ -106,9 +121,13 @@ function GUI(){
         riskTextColor = value;
     });
 
-    var obj = { Save:function(){ saveMatrix() }};
 
+    //Save
+    var obj = { Save:function(){ saveMatrix() }};
     this.gui.add(obj,'Save');
+
+
+
 
     this.updateMaxValueBorderControllers = function(){
         for (var i = 0; i < this.gui.__folders.Matrix.__controllers.length; i++) {
