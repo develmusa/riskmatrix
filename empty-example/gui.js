@@ -53,35 +53,35 @@ function GUI(){
 
     //Description Vector
     controller = f1_1.add(descriptionKeys, "Arrow Thickness", 0, 50).step(1);
-    controller.onFinishChange(function (value) {
+    controller.onChange(function (value) {
         arrowThickness = value;
     });
     controller = f1_1.add(descriptionKeys, "Arrow Length", 0, 50).step(1);
-    controller.onFinishChange(function (value) {
+    controller.onChange(function (value) {
         arrowLength = value;
     });
     controller = f1_1.add(descriptionKeys, "Arrow Distance", 0, 50).step(1);
-    controller.onFinishChange(function (value) {
+    controller.onChange(function (value) {
         marginDescriptionVector = value;
     });
     controller = f1_1.add(descriptionKeys, "Description Distance", 0, 50).step(1);
-    controller.onFinishChange(function (value) {
+    controller.onChange(function (value) {
         arrowDescriptionMargin = value;
     });
     controller = f1_1.add(descriptionKeys, "Description Size", 0, 50).step(1);
-    controller.onFinishChange(function (value) {
+    controller.onChange(function (value) {
         descriptionSize = value;
     });
 
     //Risk Section
     controller = f1_2.add(riskSectionKeys, "Upper Border", 0, 1000).step(1).listen();
-    controller.onFinishChange(function (value) {
+    controller.onChange(function (value) {
         upperBorder = value;
         if (lowerBorder > upperBorder)
             lowerBorder = upperBorder;
     });
     controller = f1_2.add(riskSectionKeys, "Lower Border", 0, 1000).step(1).listen();
-    controller.onFinishChange(function (value) {
+    controller.onChange(function (value) {
         lowerBorder = value;
         if (upperBorder < lowerBorder)
             upperBorder = lowerBorder;
@@ -105,7 +105,7 @@ function GUI(){
 
     //Risks
     controller = f2.add(riskKeys, "Size", 0, 100).step(1);
-    controller.onFinishChange(function (value) {
+    controller.onChange(function (value) {
         riskSize = value;
     });
     controller = f2.addColor(riskKeys, 'Color');
@@ -113,7 +113,7 @@ function GUI(){
         riskColor = value;
     });
     controller = f2.add(riskKeys, "Text Size", 0, 100).step(1);
-    controller.onFinishChange(function (value) {
+    controller.onChange(function (value) {
         riskTextSize = value;
     });
     controller = f2.addColor(riskKeys, 'Text Color');
