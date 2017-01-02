@@ -25,7 +25,9 @@ var marginDescriptionVector = 20;
 var arrowLength = 20;
 var arrowThickness = 10;
 var arrowDescriptionMargin = 20;
+var descriptionSize = 15;
 var sliderUpperBorder, sliderLowerBorder, sliderRiskSize;
+var gui;
 
 
 function setup() {
@@ -60,7 +62,7 @@ function setup() {
 
     inputLikelihood.input(drawAll);
     inputConsequence.input(drawAll);
-    createGUI();
+    gui = new GUI();
     drawAll()
 
 
@@ -79,24 +81,6 @@ var FizzyText = function() {
     this.displayOutline = false;
 };
 
-
-function createGUI(){
-    var gui = new dat.GUI();
-
-    var keys = {
-        "arrowThickness": arrowThickness,
-    };
-
-    var f1 = gui.addFolder("Matrix");
-    var f2 = gui.addFolder("Risks");
-
-    var controller = f1.add(keys, "arrowThickness", 0, 50).step(1);
-    controller.onFinishChange(function (value) {
-        console.log(value);
-        arrowThickness = value;
-    });
-
-}
 
 function drawMatrix(){
     clear();
@@ -158,7 +142,7 @@ function drawDescriptionVector(){
     fill('black');
     triangle(startPointVertical.x,startPointVertical.y,startPointVertical.x - arrowThickness/2,startPointVertical.y+arrowLength,startPointVertical.x+ arrowThickness/2,startPointVertical.y+arrowLength);
     triangle(endPointHorizontal.x,endPointHorizontal.y,endPointHorizontal.x - arrowLength,endPointHorizontal.y - arrowThickness/2,endPointHorizontal.x - arrowLength,endPointHorizontal.y + arrowThickness/2);
-    textSize(15);
+    textSize(descriptionSize);
     textAlign(CENTER,CENTER);
     text("Consequence",startPointHorizontal.x+(endPointHorizontal.x-startPointHorizontal.x)/2,arrowDescriptionMargin + startPointHorizontal.y + (endPointHorizontal.y-startPointHorizontal.y)/2);
     translate(startPointVertical.x- arrowDescriptionMargin +(endPointVertical.x-startPointVertical.x)/2,startPointVertical.y + (endPointVertical.y-startPointVertical.y)/2);
