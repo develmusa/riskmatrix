@@ -56,11 +56,17 @@ function setCanvasSize(){
 
 function setup() {
     setCanvasSize();
-    canvas = createCanvas(canvasSize,canvasSize);
+    const canvasHolder = select('#canvasHolder'),
+        canvasWidth  = canvasHolder.width,
+        canvasHeight = canvasHolder.height;
+
+    canvas = createCanvas(800,800).parent(canvasHolder);
     /*
       elementPartition= createElement('h2', 'Partition Count:');
     elementPartition.position(20, 5);
     */
+
+
 
     gui = new GUI();
     drawAll();
