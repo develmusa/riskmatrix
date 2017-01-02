@@ -10,15 +10,15 @@ var elementPartition, elementLikelihood, elementConsequence;
 var table;
 var offsetXMatrix = 100;
 var offsetYMatrix = 150;
-var sizeXMatrix = 400;
-var sizeYMatrix = 400;
+var sizeXMatrix = 600;
+var sizeYMatrix = 600;
 var rectArray;
 var marginDescriptionVector = 20;
 var arrowLength = 20;
 var arrowThickness = 10;
 var arrowDescriptionMargin = 20;
 var descriptionSize = 15;
-var sliderUpperBorder, sliderLowerBorder, sliderRiskSize;
+var upperBorder, lowerBorder;
 var gui;
 var riskColor = "#969696";
 var riskTextColor = '#000000';
@@ -26,41 +26,43 @@ var riskSize = 40;
 var riskTextSize = 15;
 var riskArray = [];
 
+var yInterceptUpper;
+
+var yInterceptLower;
+
+var yInterceptMax;
+
+var slope;
+
 
 function setup() {
-    var canvas = createCanvas(600, 600);
+    var canvas = createCanvas(800, 800);
     elementPartition= createElement('h2', 'Partition Count:');
     elementPartition.position(20, 5);
 
     elementLikelihood= createElement('p', 'Likelihood:');
     elementLikelihood.position(20, 75);
-    inputLikelihood = createInput([3]);
+    inputLikelihood = createInput([10]);
     inputLikelihood.position(120, 90);
     inputLikelihood.size(15);
 
     elementConsequence= createElement('p', 'Consequence:');
     elementConsequence.position(20, 105);
-    inputConsequence = createInput([3]);
+    inputConsequence = createInput([10]);
     inputConsequence.position(120, 120);
     inputConsequence.size(15);
 
-    sliderUpperBorder = createSlider(-1000, +1000, -sizeYMatrix);
-    sliderUpperBorder.position(250, 25);
+    upperBorder = 0;
 
-    sliderLowerBorder = createSlider(-1000, +1000, -sizeYMatrix);
-    sliderLowerBorder.position(250, 50);
+    lowerBorder = 0;
 
-    sliderRiskSize = createSlider(1, 100, 20);
-    sliderRiskSize.position(250, 75);
-
-    sliderUpperBorder.input(drawAll);
-    sliderLowerBorder.input(drawAll);
-    sliderRiskSize.input(drawAll);
 
     inputLikelihood.input(drawAll);
     inputConsequence.input(drawAll);
     gui = new GUI();
-    drawAll()
+
+
+    drawAll();
 
 
 
@@ -81,9 +83,14 @@ function drawMatrix(){
     var Partitionsconsequence = parseInt(inputConsequence.value());
     //set cordinatas(0,0) in the left bottom edge of the graph
     translate(offsetXMatrix, offsetYMatrix + sizeYMatrix);
-    var yInterceptUpper= -sliderUpperBorder.value();
-    var yInterceptLower= -sliderLowerBorder.value();
-    var slope = -(0-sizeYMatrix/sizeXMatrix-0);
+    yInterceptUpper= upperBorder;
+    yInterceptLower= lowerBorder;
+    slope = -(0-sizeYMatrix/sizeXMatrix-0);
+
+    yInterceptMax = -sizeYMatrix - sizeXMatrix*slope;
+    gui.updateMaxValueBorderControllers();
+
+        //y =mx +c
     var xRectangle;
     var yRectangle;
     var widthRectangle;
@@ -102,9 +109,9 @@ function drawMatrix(){
             widthRectangle = sizeXMatrix / partitionsLikelihood;
             heightRectangle = sizeYMatrix / Partitionsconsequence;
 
-            if((yRectangle-widthRectangle/2)< (slope*(xRectangle-heightRectangle/2)+yInterceptUpper)) {
+            if((yRectangle-widthRectangle/2)< (slope*(xRectangle-heightRectangle/2)-yInterceptUpper)) {
                 colorRectangle = 'red';
-            }else if((yRectangle-widthRectangle/2) > (slope*(xRectangle-heightRectangle/2)+yInterceptUpper) && (yRectangle-widthRectangle/2)< (slope*(xRectangle-heightRectangle/2)+yInterceptLower) ){
+            }else if((yRectangle-widthRectangle/2) >= (slope*(xRectangle-heightRectangle/2)-yInterceptUpper) && (yRectangle-widthRectangle/2)<= (slope*(xRectangle-heightRectangle/2)-yInterceptLower) ){
                 colorRectangle = 'yellow';
             } else {
                 colorRectangle = 'green';
@@ -116,8 +123,8 @@ function drawMatrix(){
         }
     }
 
-    line(0,slope*0+yInterceptUpper,sizeXMatrix,slope*sizeXMatrix+yInterceptUpper);
-    line(0,slope*0+yInterceptLower,sizeXMatrix,slope*sizeXMatrix+yInterceptLower);
+    line(0,slope*0-yInterceptUpper,sizeXMatrix,slope*sizeXMatrix-yInterceptUpper);
+    line(0,slope*0-yInterceptLower,sizeXMatrix,slope*sizeXMatrix-yInterceptLower);
     pop();
 
 }
@@ -167,10 +174,10 @@ function showRisks(){
 }
 
 function draw() {
-
-    if(sliderUpperBorder.value() < sliderLowerBorder.value()) {
-        sliderLowerBorder.value(sliderUpperBorder.value());
-    }
+/*
+    if(upperBorder.value() < lowerBorder.value()) {
+        lowerBorder.value(upperBorder.value());
+    }*/
     drawAll();
 }
 
