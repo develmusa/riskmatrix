@@ -34,6 +34,10 @@ var yInterceptMax;
 
 var slope;
 
+var upperSectionColor = "#ff0000";
+var middleSectionColor = "#ffff00";
+var lowerSectionColor = "#00ff00";
+
 
 function setup() {
     var canvas = createCanvas(800, 800);
@@ -110,11 +114,11 @@ function drawMatrix(){
             heightRectangle = sizeYMatrix / Partitionsconsequence;
 
             if((yRectangle-widthRectangle/2)< (slope*(xRectangle-heightRectangle/2)-yInterceptUpper)) {
-                colorRectangle = 'red';
+                colorRectangle = upperSectionColor;
             }else if((yRectangle-widthRectangle/2) >= (slope*(xRectangle-heightRectangle/2)-yInterceptUpper) && (yRectangle-widthRectangle/2)<= (slope*(xRectangle-heightRectangle/2)-yInterceptLower) ){
-                colorRectangle = 'yellow';
+                colorRectangle = middleSectionColor;
             } else {
-                colorRectangle = 'green';
+                colorRectangle = lowerSectionColor;
             }
 
             rectArray[i][j] = new Rect(xRectangle ,yRectangle, widthRectangle  , heightRectangle , colorRectangle);

@@ -4,10 +4,15 @@
 function GUI(){
     this.gui = new dat.GUI();
 
-    var matrixKeys = {
+    var riskSectionKeys = {
         "Upper Border": upperBorder,
-        "Lower Border": lowerBorder
+        "Lower Border": lowerBorder,
+        "Upper Section Color": upperSectionColor,
+        "Middle Section Color": middleSectionColor,
+        "Lower Section Color": lowerSectionColor
     };
+    
+    
 
     var descriptionKeys = {
         "Arrow Thickness": arrowThickness,
@@ -17,7 +22,7 @@ function GUI(){
         "Description Size": descriptionSize
     };
 
-    var risksKeys = {
+    var riskKeys = {
         "Size": riskSize,
         "Color": riskColor,
         "Text Size": riskTextSize,
@@ -26,22 +31,10 @@ function GUI(){
 
     var f1 = this.gui.addFolder("Matrix");
     var f1_1 = f1.addFolder("Description Vector");
-    var f2 = this.gui.addFolder("Risks");
+    var f1_2 = f1.addFolder("Risk Section");
+    var f2 = this.gui.addFolder("Risk");
 
-    //Matrix
-    var controller = f1.add(matrixKeys, "Upper Border", 0, 1000).step(1).listen();
-    controller.onFinishChange(function (value) {
-        upperBorder = value;
-        if (lowerBorder > upperBorder)
-            lowerBorder = upperBorder;
-    });
 
-    controller = f1.add(matrixKeys, "Lower Border", 0, 1000).step(1).listen();
-    controller.onFinishChange(function (value) {
-        lowerBorder = value;
-        if (upperBorder < lowerBorder)
-            upperBorder = lowerBorder;
-    });
 
     //Description Vector
     controller = f1_1.add(descriptionKeys, "Arrow Thickness", 0, 50).step(1);
@@ -65,21 +58,50 @@ function GUI(){
         descriptionSize = value;
     });
 
+    //Risk Section
+    var controller = f1_2.add(riskSectionKeys, "Upper Border", 0, 1000).step(1).listen();
+    controller.onFinishChange(function (value) {
+        upperBorder = value;
+        if (lowerBorder > upperBorder)
+            lowerBorder = upperBorder;
+    });
+    controller = f1_2.add(riskSectionKeys, "Lower Border", 0, 1000).step(1).listen();
+    controller.onFinishChange(function (value) {
+        lowerBorder = value;
+        if (upperBorder < lowerBorder)
+            upperBorder = lowerBorder;
+    });
+
+    controller = f1_2.addColor(riskSectionKeys, 'Upper Section Color');
+    controller.onFinishChange(function (value) {
+        upperSectionColor = value;
+    });
+
+    controller = f1_2.addColor(riskSectionKeys, 'Middle Section Color');
+    controller.onFinishChange(function (value) {
+        middleSectionColor = value;
+    });
+
+    controller = f1_2.addColor(riskSectionKeys, 'Lower Section Color');
+    controller.onFinishChange(function (value) {
+        lowerSectionColor = value;
+    });
+
 
     //Risks
-    controller = f2.add(risksKeys, "Size", 0, 100).step(1);
+    controller = f2.add(riskKeys, "Size", 0, 100).step(1);
     controller.onFinishChange(function (value) {
         riskSize = value;
     });
-    controller = f2.addColor(risksKeys, 'Color');
+    controller = f2.addColor(riskKeys, 'Color');
     controller.onFinishChange(function (value) {
         riskColor = value;
     });
-    controller = f2.add(risksKeys, "Text Size", 0, 100).step(1);
+    controller = f2.add(riskKeys, "Text Size", 0, 100).step(1);
     controller.onFinishChange(function (value) {
         riskTextSize = value;
     });
-    controller = f2.addColor(risksKeys, 'Text Color');
+    controller = f2.addColor(riskKeys, 'Text Color');
     controller.onFinishChange(function (value) {
         riskTextColor = value;
     });
