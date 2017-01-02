@@ -106,6 +106,9 @@ function GUI(){
         riskTextColor = value;
     });
 
+    var obj = { Save:function(){ saveMatrix() }};
+
+    this.gui.add(obj,'Save');
 
     this.updateMaxValueBorderControllers = function(){
         for (var i = 0; i < this.gui.__folders.Matrix.__controllers.length; i++) {

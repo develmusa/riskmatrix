@@ -4,8 +4,8 @@ var risksInput = [[1,1,3],[2,1,3],[3,1,3],[4,1,3],[5,1,3],[6,1,3],[7,1,3],[8,1,3
     [1,2,2],[2,2,2],[3,2,2],[4,2,2],[5,2,2],
     [1,1,1],[2,1,1],[3,1,1]];
 
-var inputLikelihood;
-var inputConsequence;
+var inputLikelihood = 3;
+var inputConsequence = 3;
 var elementPartition, elementLikelihood, elementConsequence;
 var table;
 var offsetXMatrix = 100;
@@ -37,32 +37,23 @@ var slope;
 var upperSectionColor = "#ff0000";
 var middleSectionColor = "#ffff00";
 var lowerSectionColor = "#00ff00";
-
+var canvas
 
 function setup() {
-    var canvas = createCanvas(800, 800);
-    elementPartition= createElement('h2', 'Partition Count:');
+
+    canvas = createCanvas(800, 800);
+
+    /*
+      elementPartition= createElement('h2', 'Partition Count:');
     elementPartition.position(20, 5);
+    */
 
-    elementLikelihood= createElement('p', 'Likelihood:');
-    elementLikelihood.position(20, 75);
-    inputLikelihood = createInput([10]);
-    inputLikelihood.position(120, 90);
-    inputLikelihood.size(15);
-
-    elementConsequence= createElement('p', 'Consequence:');
-    elementConsequence.position(20, 105);
-    inputConsequence = createInput([10]);
-    inputConsequence.position(120, 120);
-    inputConsequence.size(15);
 
     upperBorder = 0;
 
     lowerBorder = 0;
 
 
-    inputLikelihood.input(drawAll);
-    inputConsequence.input(drawAll);
     gui = new GUI();
 
 
@@ -83,8 +74,8 @@ function drawMatrix(){
     clear();
     drawDescriptionVector();
     push();
-    var partitionsLikelihood = parseInt(inputLikelihood.value());
-    var Partitionsconsequence = parseInt(inputConsequence.value());
+    var partitionsLikelihood = parseInt(inputLikelihood);
+    var Partitionsconsequence = parseInt(inputConsequence);
     //set cordinatas(0,0) in the left bottom edge of the graph
     translate(offsetXMatrix, offsetYMatrix + sizeYMatrix);
     yInterceptUpper= upperBorder;
@@ -185,4 +176,6 @@ function draw() {
     drawAll();
 }
 
-//saveCanvas('myCanvas', 'png');
+function saveMatrix(){
+    saveCanvas('Risk_Matrix', 'png');
+};
