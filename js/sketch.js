@@ -1,60 +1,28 @@
-var risksInput = [
-    {
-        nr: 1,
-        likelihood: 1,
-        consequence: 1,
-        isNew: false
-    },
-    {
-        nr: 2,
-        likelihood: 1,
-        consequence: 1,
-        isNew: false
-    },
-    {
-        nr: 3,
-        likelihood: 3,
-        consequence: 2,
-        isNew: false
-    },
-];
-
+var canvas, gui, rectArray, canvasSize,risksInput, yInterceptLower, yInterceptUpper;
 var inputLikelihood = 3;
+var inputLikelihoodMin = inputLikelihood;
 var inputConsequence = 3;
-var table;
+var inputConsequenceMin = inputConsequence;
 var offsetXMatrix = 100;
 var offsetYMatrix = 100;
 var sizeXMatrix = 600;
 var sizeYMatrix = 600;
-var rectArray;
 var marginDescriptionVector = 20;
 var arrowLength = 20;
 var arrowThickness = 10;
 var arrowDescriptionMargin = 20;
 var descriptionSize = 15;
-
-var gui;
 var riskColor = "#969696";
 var riskTextColor = '#000000';
 var riskSize = 40;
 var riskTextSize = 15;
-
-var yInterceptUpper;
-
-var yInterceptLower;
-
 var slope = -(0-sizeYMatrix/sizeXMatrix-0);
-
 var yInterceptMax = -sizeYMatrix - sizeXMatrix*slope;
-
 var upperBorder = yInterceptMax / 5 * -3;
 var lowerBorder = yInterceptMax / 5 * -2;
-
 var upperSectionColor = "#ff0000";
 var middleSectionColor = "#ffff00";
 var lowerSectionColor = "#00ff00";
-var canvas;
-var canvasSize;
 
 function setCanvasSize(){
     if (window.innerWidth < window.innerHeight){
@@ -67,14 +35,8 @@ function setCanvasSize(){
 function setup() {
     setCanvasSize();
     const canvasHolder = select('#canvasHolder'),
-
     canvas = createCanvas(canvasSize,canvasSize).parent(canvasHolder);
-
     frameRate(30);
-    /*
-      elementPartition= createElement('h2', 'Partition Count:');
-    elementPartition.position(20, 5);
-    */
     gui = new GUI();
 }
 
@@ -97,7 +59,8 @@ function drawMatrix(){
     push();
 
     var partitionsLikelihood = parseInt(inputLikelihood);
-    var Partitionsconsequence = parseInt(inputConsequence);
+    var partitionsConsequence = parseInt(inputConsequence);
+
     //set cordinatas(0,0) in the left bottom edge of the graph
     translate(offsetXMatrix, offsetYMatrix + sizeYMatrix);
     yInterceptUpper= upperBorder;
@@ -107,7 +70,7 @@ function drawMatrix(){
     yInterceptMax = -sizeYMatrix - sizeXMatrix*slope;
     gui.updateMaxValueBorderControllers();
 
-        //y =mx +c
+    //y =mx +c
     var xRectangle;
     var yRectangle;
     var widthRectangle;
@@ -115,16 +78,16 @@ function drawMatrix(){
     var colorRectangle;
 
 
-    rectArray=new Array(partitionsLikelihood);
-    for (var i=0; i < partitionsLikelihood; i++) {
-        rectArray[i] = new Array(Partitionsconsequence);
+    rectArray=new Array(partitionsConsequence);
+    for (var i=0; i < partitionsConsequence; i++) {
+        rectArray[i] = new Array(partitionsLikelihood);
     }
     for(var i = 0; i < rectArray.length; i++){
         for(var j = 0; j < rectArray[i].length; j++) {
-            xRectangle = sizeXMatrix / partitionsLikelihood *i;
-            yRectangle = sizeYMatrix / Partitionsconsequence * j - sizeYMatrix;
-            widthRectangle = sizeXMatrix / partitionsLikelihood;
-            heightRectangle = sizeYMatrix / Partitionsconsequence;
+            xRectangle = sizeXMatrix / partitionsConsequence *i;
+            yRectangle = sizeYMatrix / partitionsLikelihood * j - sizeYMatrix;
+            widthRectangle = sizeXMatrix / partitionsConsequence;
+            heightRectangle = sizeYMatrix / partitionsLikelihood;
             if((yRectangle-widthRectangle/2)< (slope*(xRectangle-heightRectangle/2)-yInterceptUpper)) {
                 colorRectangle = upperSectionColor;
             }else if((yRectangle-widthRectangle/2) >= (slope*(xRectangle-heightRectangle/2)-yInterceptUpper) && (yRectangle-widthRectangle/2)<= (slope*(xRectangle-heightRectangle/2)-yInterceptLower) ){
@@ -170,7 +133,6 @@ function generateRisks(){
         if (risksInput[i].isNew != true){
             risks[i] = new Risk(risksInput[i].nr,risksInput[i].likelihood,risksInput[i].consequence)
         }
-
     }
     return risks
 }
@@ -178,11 +140,10 @@ function generateRisks(){
 function mapRisksToRectangles(){
     var risks = generateRisks();
     for (var i = 0; i < risks.length; i++){
-        var likelihood = risks[i].likelihood -1;
         var consequence = risks[i].consequence -1;
-        rectArray[likelihood][consequence].addRisk(risks[i]);
+        var likelihood = (inputLikelihood - 1) - (risks[i].likelihood -1);
+        rectArray[consequence][likelihood].addRisk(risks[i]);
     }
-
 }
 
 function showRisks(){
@@ -191,6 +152,27 @@ function showRisks(){
             rectArray[i][j].renderRisks();
         }
     }
+}
+
+function setMinMatrixSize(){
+    var maxLikelihood = 0;
+    var maxConsequence = 0;
+    for (var i = 0; i < risksInput.length; i++){
+        if(maxLikelihood < risksInput[i].likelihood)
+            maxLikelihood = risksInput[i].likelihood;
+        if(maxConsequence < risksInput[i].consequence)
+            maxConsequence = risksInput[i].consequence;
+    }
+    inputLikelihoodMin = maxLikelihood;
+    inputConsequenceMin = maxConsequence;
+
+    if(inputLikelihood < inputLikelihoodMin)
+        inputLikelihood = inputLikelihoodMin;
+    if(inputConsequence < inputConsequenceMin)
+        inputConsequence = inputConsequenceMin;
+
+    gui.updateMinValueLikelihoodController(parseInt(inputLikelihoodMin));
+    gui.updateMinValueConsequenceController(parseInt(inputConsequenceMin));
 }
 
 function saveMatrix(){
@@ -206,5 +188,4 @@ function drawAll(){
 
 function draw() {
     drawAll();
-    //background(0, 100, 200);
 }

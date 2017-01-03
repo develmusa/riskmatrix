@@ -3,8 +3,53 @@
  */
 
 app.controller('MainController', function($scope, $filter) {
-    var editListRisks = risksInput;
-    $scope.risks = editListRisks;
+    risksInput = [
+        {
+            nr: 1,
+            likelihood: 1,
+            consequence: 1,
+            isNew: false
+        },
+        {
+            nr: 2,
+            likelihood: 1,
+            consequence: 1,
+            isNew: false
+        },
+        {
+            nr: 3,
+            likelihood: 3,
+            consequence: 1,
+            isNew: false
+        },
+        {
+            nr: 4,
+            likelihood: 3,
+            consequence: 3,
+            isNew: false
+        },
+        {
+            nr: 5,
+            likelihood: 3,
+            consequence: 1,
+            isNew: false
+        },
+        {
+            nr: 6,
+            likelihood: 2,
+            consequence: 2,
+            isNew: false
+        },
+        {
+            nr: 7,
+            likelihood: 3,
+            consequence: 1,
+            isNew: false
+        }
+
+    ];
+
+    $scope.risks = risksInput;
 
 
     // filter users to show
@@ -58,7 +103,7 @@ app.controller('MainController', function($scope, $filter) {
             if (risk.isNew) {
                 risk.isNew = false;
             }
-            drawAll();
+            setMinMatrixSize();
         }
     };
 });

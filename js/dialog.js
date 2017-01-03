@@ -1,9 +1,3 @@
-/**
- * Created by sikcd on 03.01.2017.
- */
-
-
-
 $(testFunc = function() {
     $( "#dialog" ).dialog({
         autoOpen: true,

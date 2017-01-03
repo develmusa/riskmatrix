@@ -51,12 +51,12 @@ function GUI(){
 
 
     //Matrix
-    controller = f1.add(matrixKeys, "Divisions Likelihood", 0, 10).step(1);
+    controller = f1.add(matrixKeys, "Divisions Likelihood", inputConsequenceMin, 10).step(1).listen();
     controller.onFinishChange(function (value) {
         inputLikelihood = value;
     });
 
-    controller = f1.add(matrixKeys, "Divisions Consequence", 0, 10).step(1);
+    controller = f1.add(matrixKeys, "Divisions Consequence", inputConsequenceMin, 10).step(1).listen();
 
     controller.onFinishChange(function (value) {
         inputConsequence = value;
@@ -137,6 +137,20 @@ function GUI(){
         for (var i = 0; i < this.gui.__folders.Matrix.__controllers.length; i++) {
             if (this.gui.__folders.Matrix.__controllers[i].property == "Upper Border" || this.gui.__folders.Matrix.__controllers[i].property == "Lower Border" )
                 this.gui.__folders.Matrix.__controllers[i].max(-1*yInterceptMax);
+        }
+    };
+
+    this.updateMinValueLikelihoodController = function(min){
+        for (var i = 0; i < this.gui.__folders.Matrix.__controllers.length; i++) {
+            if (this.gui.__folders.Matrix.__controllers[i].property == "Divisions Likelihood")
+                this.gui.__folders.Matrix.__controllers[i].min(min);
+        }
+    };
+
+    this.updateMinValueConsequenceController = function(min){
+        for (var i = 0; i < this.gui.__folders.Matrix.__controllers.length; i++) {
+            if (this.gui.__folders.Matrix.__controllers[i].property == "Divisions Consequence")
+                this.gui.__folders.Matrix.__controllers[i].min(min);
         }
     };
 }
