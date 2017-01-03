@@ -1,11 +1,29 @@
 var sketchContainer = "sketch";
 var guiContainer = "sketch-gui";
 
-var risksInput = [[1,1,3],[2,1,3],[3,1,3],[4,1,3],[5,1,3],[6,1,3],[7,1,3],[8,1,3],[9,1,3],[10,1,3],[11,1,3],[12,1,3],[13,1,3],
+/*var risksInput = [[1,1,3],[2,1,3],[3,1,3],[4,1,3],[5,1,3],[6,1,3],[7,1,3],[8,1,3],[9,1,3],[10,1,3],[11,1,3],[12,1,3],[13,1,3],
     [1,1,2],[2,1,2],[3,1,2],[4,1,2],[5,1,2],[6,1,2],[7,1,2],[8,1,2],
     [1,2,1],[2,2,1],
     [1,2,2],[2,2,2],[3,2,2],[4,2,2],[5,2,2],
-    [1,1,1],[2,1,1],[3,1,1]];
+    [1,1,1],[2,1,1],[3,1,1]];*/
+
+var risksInput = [
+    {
+        nr: 1,
+        likelihood: 1,
+        consequence: 1
+    },
+    {
+        nr: 2,
+        likelihood: 1,
+        consequence: 1
+    },
+    {
+        nr: 3,
+        likelihood: 3,
+        consequence: 2
+    },
+];
 
 var inputLikelihood = 3;
 var inputConsequence = 3;
@@ -171,7 +189,9 @@ function drawDescriptionVector(){
 }
 function generateRisks(){
     for (var i = 0; i < risksInput.length; i++){
-        riskArray[i] = new Risk(risksInput[i][0],risksInput[i][1],risksInput[i][2])
+        console.log("riskInputlenght", risksInput.length);
+        riskArray[i] = new Risk(risksInput[i].nr,risksInput[i].likelihood,risksInput[i].consequence)
+
     }
 
 }
