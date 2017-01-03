@@ -1,33 +1,26 @@
-var sketchContainer = "sketch";
-var guiContainer = "sketch-gui";
-
-/*var risksInput = [[1,1,3],[2,1,3],[3,1,3],[4,1,3],[5,1,3],[6,1,3],[7,1,3],[8,1,3],[9,1,3],[10,1,3],[11,1,3],[12,1,3],[13,1,3],
-    [1,1,2],[2,1,2],[3,1,2],[4,1,2],[5,1,2],[6,1,2],[7,1,2],[8,1,2],
-    [1,2,1],[2,2,1],
-    [1,2,2],[2,2,2],[3,2,2],[4,2,2],[5,2,2],
-    [1,1,1],[2,1,1],[3,1,1]];*/
-
 var risksInput = [
     {
         nr: 1,
         likelihood: 1,
-        consequence: 1
+        consequence: 1,
+        isNew: false
     },
     {
         nr: 2,
         likelihood: 1,
-        consequence: 1
+        consequence: 1,
+        isNew: false
     },
     {
         nr: 3,
         likelihood: 3,
-        consequence: 2
+        consequence: 2,
+        isNew: false
     },
 ];
 
 var inputLikelihood = 3;
 var inputConsequence = 3;
-var elementPartition, elementLikelihood, elementConsequence;
 var table;
 var offsetXMatrix = 100;
 var offsetYMatrix = 100;
@@ -45,7 +38,6 @@ var riskColor = "#969696";
 var riskTextColor = '#000000';
 var riskSize = 40;
 var riskTextSize = 15;
-var riskArray = [];
 
 var yInterceptUpper;
 
@@ -75,19 +67,15 @@ function setCanvasSize(){
 function setup() {
     setCanvasSize();
     const canvasHolder = select('#canvasHolder'),
-        canvasWidth  = canvasHolder.width,
-        canvasHeight = canvasHolder.height;
 
     canvas = createCanvas(canvasSize,canvasSize).parent(canvasHolder);
+
+    frameRate(30);
     /*
       elementPartition= createElement('h2', 'Partition Count:');
     elementPartition.position(20, 5);
     */
-
-
-
     gui = new GUI();
-    drawAll();
 }
 
 function windowResized() {
@@ -103,15 +91,6 @@ function setScaleFactor(){
     return canvasSize/yTotalLength;
 
 }
-
-function drawAll(){
-    scale(setScaleFactor());
-    drawMatrix();
-    generateRisks();
-    mapRisksToRectangles();
-    showRisks();
-}
-
 function drawMatrix(){
     clear();
     drawDescriptionVector();
@@ -146,7 +125,6 @@ function drawMatrix(){
             yRectangle = sizeYMatrix / Partitionsconsequence * j - sizeYMatrix;
             widthRectangle = sizeXMatrix / partitionsLikelihood;
             heightRectangle = sizeYMatrix / Partitionsconsequence;
-
             if((yRectangle-widthRectangle/2)< (slope*(xRectangle-heightRectangle/2)-yInterceptUpper)) {
                 colorRectangle = upperSectionColor;
             }else if((yRectangle-widthRectangle/2) >= (slope*(xRectangle-heightRectangle/2)-yInterceptUpper) && (yRectangle-widthRectangle/2)<= (slope*(xRectangle-heightRectangle/2)-yInterceptLower) ){
@@ -154,10 +132,8 @@ function drawMatrix(){
             } else {
                 colorRectangle = lowerSectionColor;
             }
-
             rectArray[i][j] = new Rect(xRectangle ,yRectangle, widthRectangle  , heightRectangle , colorRectangle);
             rectArray[i][j].show();
-            //console.log('partitionsLikelihood: ', i, 'Partitionsconsequence: ', j);
         }
     }
 
@@ -188,19 +164,23 @@ function drawDescriptionVector(){
 
 }
 function generateRisks(){
+    var risks = [];
     for (var i = 0; i < risksInput.length; i++){
         console.log("riskInputlenght", risksInput.length);
-        riskArray[i] = new Risk(risksInput[i].nr,risksInput[i].likelihood,risksInput[i].consequence)
+        if (risksInput[i].isNew != true){
+            risks[i] = new Risk(risksInput[i].nr,risksInput[i].likelihood,risksInput[i].consequence)
+        }
 
     }
-
+    return risks
 }
 
 function mapRisksToRectangles(){
-    for (var i = 0; i < riskArray.length; i++){
-        var likelihood = riskArray[i].likelihood -1;
-        var consequence = riskArray[i].consequence -1;
-        rectArray[likelihood][consequence].addRisk(riskArray[i]);
+    var risks = generateRisks();
+    for (var i = 0; i < risks.length; i++){
+        var likelihood = risks[i].likelihood -1;
+        var consequence = risks[i].consequence -1;
+        rectArray[likelihood][consequence].addRisk(risks[i]);
     }
 
 }
@@ -213,13 +193,18 @@ function showRisks(){
     }
 }
 
-function draw() {
-
-    drawAll();
-    //background(0, 100, 200);
-
-}
-
 function saveMatrix(){
     saveCanvas('Risk_Matrix', 'png');
-};
+}
+
+function drawAll(){
+    scale(setScaleFactor());
+    drawMatrix();
+    mapRisksToRectangles();
+    showRisks();
+}
+
+function draw() {
+    drawAll();
+    //background(0, 100, 200);
+}

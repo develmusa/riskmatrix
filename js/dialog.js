@@ -19,12 +19,13 @@ $(testFunc = function() {
         },
         modal: true,
         buttons: {
-            "Save": function () {
-                $(this).dialog("close");
-            },
-            Cancel: function () {
+            close: function () {
                 $(this).dialog("close");
             }
+        },
+        close: function( event, ui ) {
+            console.log("OuterClose");
+            //angular.element($('#mainController')).scope().cancel();
         }
     });
 } );
@@ -32,6 +33,7 @@ $(testFunc = function() {
 this.editRisks = function() {
     $( "#dialog" ).dialog( "open" );
 };
+
 
 
 

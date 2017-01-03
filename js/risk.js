@@ -1,6 +1,9 @@
 /**
  * Created by samuel on 30.12.16.
  */
+
+
+
 function Risk(nr, likelihood, consequence){
     this.nr = nr;
     this.likelihood = likelihood;

@@ -133,11 +133,6 @@ function GUI(){
         riskTextColor = value;
     });
 
-
-
-
-
-
     this.updateMaxValueBorderControllers = function(){
         for (var i = 0; i < this.gui.__folders.Matrix.__controllers.length; i++) {
             if (this.gui.__folders.Matrix.__controllers[i].property == "Upper Border" || this.gui.__folders.Matrix.__controllers[i].property == "Lower Border" )
