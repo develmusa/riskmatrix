@@ -7,11 +7,13 @@ var offsetXMatrix = 100;
 var offsetYMatrix = 100;
 var sizeXMatrix = 600;
 var sizeYMatrix = 600;
-var marginDescriptionVector = 20;
+var marginDescriptionVector = 40;
 var arrowLength = 20;
 var arrowThickness = 10;
 var arrowDescriptionMargin = 20;
-var descriptionSize = 15;
+var descriptionSize = 20;
+var indexMargin = 20;
+var indexTextSize = 16;
 var riskColor = "#969696";
 var riskTextColor = '#000000';
 var riskSize = 40;
@@ -36,7 +38,7 @@ function setup() {
     setCanvasSize();
     const canvasHolder = select('#canvasHolder'),
     canvas = createCanvas(canvasSize,canvasSize).parent(canvasHolder);
-    frameRate(30);
+    frameRate(15);
     gui = new GUI();
 }
 
@@ -97,14 +99,29 @@ function drawMatrix(){
             }
             rectArray[i][j] = new Rect(xRectangle ,yRectangle, widthRectangle  , heightRectangle , colorRectangle);
             rectArray[i][j].show();
+            //Likelihood index
+            if(i == 0) {
+                push();
+                rotate(radians(90));
+                textSize(indexTextSize);
+                textAlign(CENTER, CENTER);
+                text(rectArray[i].length - j, yRectangle + heightRectangle / 2, +indexMargin);
+                pop();
+            }
         }
+        //Consequence index
+        textSize(indexTextSize);
+        textAlign(CENTER, CENTER);
+        text(i+1, xRectangle + widthRectangle / 2, +indexMargin);
     }
+
 
     //line(0,slope*0-yInterceptUpper,sizeXMatrix,slope*sizeXMatrix-yInterceptUpper);
     //line(0,slope*0-yInterceptLower,sizeXMatrix,slope*sizeXMatrix-yInterceptLower);
     pop();
 
 }
+
 
 function drawDescriptionVector(){
     var startPointVertical = createVector(offsetXMatrix -marginDescriptionVector, offsetYMatrix);
@@ -141,7 +158,7 @@ function mapRisksToRectangles(){
     var risks = generateRisks();
     for (var i = 0; i < risks.length; i++){
         var consequence = risks[i].consequence -1;
-        var likelihood = (inputLikelihood - 1) - (risks[i].likelihood -1);
+        var likelihood = inputLikelihood - risks[i].likelihood;
         rectArray[consequence][likelihood].addRisk(risks[i]);
     }
 }

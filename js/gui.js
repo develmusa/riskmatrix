@@ -2,7 +2,7 @@
  * Created by sikcd on 02.01.2017.
  */
 function GUI(){
-    this.gui = new dat.GUI();
+    this.gui = new dat.GUI({width: 350 });
 
 
     var matrixKeys = {
@@ -23,7 +23,9 @@ function GUI(){
         "Arrow Length": arrowLength,
         "Arrow Distance": marginDescriptionVector,
         "Description Distance": arrowDescriptionMargin,
-        "Description Size": descriptionSize
+        "Description Size": descriptionSize,
+        "Index Distance": indexMargin,
+        "Index Size": indexTextSize
     };
 
     var riskKeys = {
@@ -82,6 +84,16 @@ function GUI(){
 
     controller.onChange(function (value) {
         descriptionSize = value;
+    });
+    controller = f1_1.add(descriptionKeys, "Index Distance", 0, 50).step(1);
+
+    controller.onChange(function (value) {
+        indexMargin = value;
+    });
+    controller = f1_1.add(descriptionKeys, "Index Size", 0, 50).step(1);
+
+    controller.onChange(function (value) {
+        indexTextSize = value;
     });
     //Risk Section
     controller = f1_2.add(riskSectionKeys, "Upper Border", 0, 1000).step(1).listen();

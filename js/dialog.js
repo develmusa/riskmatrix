@@ -1,6 +1,6 @@
 $(testFunc = function() {
     $( "#dialog" ).dialog({
-        autoOpen: true,
+        autoOpen: false,
         height: "auto",
         width: 600,
         show: {
