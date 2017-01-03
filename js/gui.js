@@ -33,8 +33,10 @@ function GUI(){
         "Text Color": riskTextColor
     };
 
-    var saveKey = {
-        "Save Matrix":function(){ saveMatrix() }
+    var mainKeys = {
+        "Save Matrix":function(){ saveMatrix() },
+        "Edit Risks":function(){ editRisks() }
+
     };
 
     var controller;
@@ -42,8 +44,10 @@ function GUI(){
     var f1_1 = f1.addFolder("Description Vector");
     var f1_2 = f1.addFolder("Risk Section");
     var f2 = this.gui.addFolder("Risk");
-    //Save
-    this.gui.add(saveKey,"Save Matrix");
+
+    this.gui.add(mainKeys,"Edit Risks");
+    this.gui.add(mainKeys,"Save Matrix");
+
 
 
     //Matrix

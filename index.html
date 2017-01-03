@@ -1,26 +1,46 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <title>Risk Matrix Generator</title>
+
   <script language="javascript" type="text/javascript" src="js/vendor/p5.min.js"></script>
   <script language="javascript" src="js/vendor/p5.dom.min.js"></script>
   <script language="javascript" type="text/javascript" src="js/vendor/dat.gui.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
   <script language="javascript" type="text/javascript" src="js/sketch.js"></script>
   <script language="javascript" type="text/javascript" src="js/rect.js"></script>
   <script language="javascript" type="text/javascript" src="js/risk.js"></script>
   <script language="javascript" type="text/javascript" src="js/gui.js"></script>
+  <script language="javascript" type="text/javascript" src="js/dialog.js"></script>
 
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/datGui.css">
+
 
   <!-- Close warning -->
   <script>
       function verifyexit() { return 'Are you sure ?'; }           window.onbeforeunload = verifyexit;
   </script>
 
+
+
 </head>
 
 <body>
 
+<div id="dialog" title="Basic dialog">
+  <p>This is an animated dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+</div>
+
+
 <div id=canvasHolder></div>
+
+
+
+
 </body>
 </html>
