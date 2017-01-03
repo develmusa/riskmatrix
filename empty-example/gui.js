@@ -7,8 +7,7 @@ function GUI(){
 
     var matrixKeys = {
         "Divisions Likelihood": inputLikelihood,
-        "Divisions Consequence": inputConsequence,
-        "Canvas Size": canvasSize
+        "Divisions Consequence": inputConsequence
     };
 
     var riskSectionKeys = {
@@ -34,11 +33,17 @@ function GUI(){
         "Text Color": riskTextColor
     };
 
+    var saveKey = {
+        "Save Matrix":function(){ saveMatrix() }
+    };
+
     var controller;
     var f1 = this.gui.addFolder("Matrix");
     var f1_1 = f1.addFolder("Description Vector");
     var f1_2 = f1.addFolder("Risk Section");
     var f2 = this.gui.addFolder("Risk");
+    //Save
+    this.gui.add(saveKey,"Save Matrix");
 
 
     //Matrix
@@ -48,16 +53,10 @@ function GUI(){
     });
 
     controller = f1.add(matrixKeys, "Divisions Consequence", 0, 10).step(1);
+
     controller.onFinishChange(function (value) {
         inputConsequence = value;
     });
-
-    controller = f1.add(matrixKeys, "Canvas Size", 0, 2000).step(1);
-    controller.onFinishChange(function (value) {
-        canvasSize = value;
-        windowResized();
-    });
-
     //Description Vector
     controller = f1_1.add(descriptionKeys, "Arrow Thickness", 0, 50).step(1);
     controller.onChange(function (value) {
@@ -76,10 +75,10 @@ function GUI(){
         arrowDescriptionMargin = value;
     });
     controller = f1_1.add(descriptionKeys, "Description Size", 0, 50).step(1);
+
     controller.onChange(function (value) {
         descriptionSize = value;
     });
-
     //Risk Section
     controller = f1_2.add(riskSectionKeys, "Upper Border", 0, 1000).step(1).listen();
     controller.onChange(function (value) {
@@ -105,11 +104,11 @@ function GUI(){
     });
 
     controller = f1_2.addColor(riskSectionKeys, 'Lower Section Color');
+
+
     controller.onFinishChange(function (value) {
         lowerSectionColor = value;
     });
-
-
     //Risks
     controller = f2.add(riskKeys, "Size", 0, 100).step(1);
     controller.onChange(function (value) {
@@ -124,14 +123,13 @@ function GUI(){
         riskTextSize = value;
     });
     controller = f2.addColor(riskKeys, 'Text Color');
+
+
     controller.onFinishChange(function (value) {
         riskTextColor = value;
     });
 
 
-    //Save
-    var obj = { Save:function(){ saveMatrix() }};
-    this.gui.add(obj,'Save');
 
 
 
