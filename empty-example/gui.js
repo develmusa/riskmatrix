@@ -7,7 +7,8 @@ function GUI(){
 
     var matrixKeys = {
         "Divisions Likelihood": inputLikelihood,
-        "Divisions Consequence": inputConsequence
+        "Divisions Consequence": inputConsequence,
+        "Canvas Size": canvasSize
     };
 
     var riskSectionKeys = {
@@ -49,6 +50,12 @@ function GUI(){
     controller = f1.add(matrixKeys, "Divisions Consequence", 0, 10).step(1);
     controller.onFinishChange(function (value) {
         inputConsequence = value;
+    });
+
+    controller = f1.add(matrixKeys, "Canvas Size", 0, 2000).step(1);
+    controller.onFinishChange(function (value) {
+        canvasSize = value;
+        windowResized();
     });
 
     //Description Vector

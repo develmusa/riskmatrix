@@ -60,7 +60,7 @@ function setup() {
         canvasWidth  = canvasHolder.width,
         canvasHeight = canvasHolder.height;
 
-    canvas = createCanvas(800,800).parent(canvasHolder);
+    canvas = createCanvas(canvasSize,canvasSize).parent(canvasHolder);
     /*
       elementPartition= createElement('h2', 'Partition Count:');
     elementPartition.position(20, 5);
@@ -77,7 +77,17 @@ function windowResized() {
     resizeCanvas(canvasSize,canvasSize);
 }
 
+function setScaleFactor(){
+    var xTotalLength = offsetXMatrix * 2 + sizeXMatrix;
+    var yTotalLength = offsetYMatrix * 2 + sizeYMatrix;
+    if (xTotalLength >= yTotalLength)
+        return canvasSize/xTotalLength;
+    return canvasSize/yTotalLength;
+
+}
+
 function drawAll(){
+    scale(setScaleFactor());
     drawMatrix();
     generateRisks();
     mapRisksToRectangles();
