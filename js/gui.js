@@ -1,8 +1,12 @@
 /**
  * Created by sikcd on 02.01.2017.
  */
-function GUI(){
-    this.gui = new dat.GUI({width: 350 });
+function GUI() {
+    this.gui = new dat.GUI({autoPlace: false, width: 350});
+    var customContainer = document.getElementById('gui');
+    customContainer.appendChild(this.gui.domElement);
+
+    this.gui.close();
 
 
     var matrixKeys = {
@@ -36,8 +40,12 @@ function GUI(){
     };
 
     var mainKeys = {
-        "Save Matrix":function(){ saveMatrix() },
-        "Edit Risks":function(){ editRisks() }
+        "Save Matrix": function () {
+            saveMatrix()
+        },
+        "Edit Risks": function () {
+            editRisks()
+        }
 
     };
 
@@ -47,9 +55,8 @@ function GUI(){
     var f1_2 = f1.addFolder("Risk Section");
     var f2 = this.gui.addFolder("Risk");
 
-    this.gui.add(mainKeys,"Edit Risks");
-    this.gui.add(mainKeys,"Save Matrix");
-
+    this.gui.add(mainKeys, "Edit Risks");
+    this.gui.add(mainKeys, "Save Matrix");
 
 
     //Matrix
@@ -145,21 +152,21 @@ function GUI(){
         riskTextColor = value;
     });
 
-    this.updateMaxValueBorderControllers = function(){
+    this.updateMaxValueBorderControllers = function () {
         for (var i = 0; i < this.gui.__folders.Matrix.__controllers.length; i++) {
-            if (this.gui.__folders.Matrix.__controllers[i].property == "Upper Border" || this.gui.__folders.Matrix.__controllers[i].property == "Lower Border" )
-                this.gui.__folders.Matrix.__controllers[i].max(-1*yInterceptMax);
+            if (this.gui.__folders.Matrix.__controllers[i].property == "Upper Border" || this.gui.__folders.Matrix.__controllers[i].property == "Lower Border")
+                this.gui.__folders.Matrix.__controllers[i].max(-1 * yInterceptMax);
         }
     };
 
-    this.updateMinValueLikelihoodController = function(min){
+    this.updateMinValueLikelihoodController = function (min) {
         for (var i = 0; i < this.gui.__folders.Matrix.__controllers.length; i++) {
             if (this.gui.__folders.Matrix.__controllers[i].property == "Divisions Likelihood")
                 this.gui.__folders.Matrix.__controllers[i].min(min);
         }
     };
 
-    this.updateMinValueConsequenceController = function(min){
+    this.updateMinValueConsequenceController = function (min) {
         for (var i = 0; i < this.gui.__folders.Matrix.__controllers.length; i++) {
             if (this.gui.__folders.Matrix.__controllers[i].property == "Divisions Consequence")
                 this.gui.__folders.Matrix.__controllers[i].min(min);

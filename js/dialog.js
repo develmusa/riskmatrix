@@ -1,5 +1,5 @@
-$(testFunc = function() {
-    $( "#dialog" ).dialog({
+$(testFunc = function () {
+    $("#dialog").dialog({
         autoOpen: false,
         height: "auto",
         width: 600,
@@ -17,15 +17,15 @@ $(testFunc = function() {
                 $(this).dialog("close");
             }
         },
-        close: function( event, ui ) {
+        close: function (event, ui) {
             console.log("OuterClose");
             //angular.element($('#mainController')).scope().cancel();
         }
     });
-} );
+});
 
-this.editRisks = function() {
-    $( "#dialog" ).dialog( "open" );
+this.editRisks = function () {
+    $("#dialog").dialog("open");
 };
 
 

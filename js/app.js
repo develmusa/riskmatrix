@@ -3,6 +3,6 @@
  */
 var app = angular.module("matrix", ["xeditable"]);
 
-app.run(function(editableOptions) {
+app.run(function (editableOptions) {
     editableOptions.theme = 'bs3';
 });

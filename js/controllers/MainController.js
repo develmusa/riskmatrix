@@ -2,7 +2,7 @@
  * Created by sikcd on 03.01.2017.
  */
 
-app.controller('MainController', function($scope, $filter) {
+app.controller('MainController', function ($scope, $filter) {
     risksInput = [
         {
             nr: 1,
@@ -53,12 +53,12 @@ app.controller('MainController', function($scope, $filter) {
 
 
     // filter users to show
-    $scope.filterRisks = function(risk) {
+    $scope.filterRisks = function (risk) {
         return risk.isDeleted !== true;
     };
 
     // mark user as deleted
-    $scope.deleteRisk = function(nr) {
+    $scope.deleteRisk = function (nr) {
         var filtered = $filter('filter')($scope.risks, {nr: nr});
         if (filtered.length) {
             filtered[0].isDeleted = true;
@@ -66,9 +66,9 @@ app.controller('MainController', function($scope, $filter) {
     };
 
     // add user
-    $scope.addUser = function() {
+    $scope.addUser = function () {
         $scope.risks.push({
-            nr: $scope.risks.length+1,
+            nr: $scope.risks.length + 1,
             likelihood: 1,
             consequence: 1,
             isNew: true
@@ -76,7 +76,7 @@ app.controller('MainController', function($scope, $filter) {
     };
 
     // cancel all changes
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         for (var i = $scope.risks.length; i--;) {
             var risk = $scope.risks[i];
             // undelete
@@ -87,11 +87,12 @@ app.controller('MainController', function($scope, $filter) {
             if (risk.isNew) {
                 $scope.risks.pop(i);
             }
-        };
+        }
+        ;
     };
 
     // save edits
-    $scope.saveTable = function() {
+    $scope.saveTable = function () {
         var results = [];
         for (var i = $scope.risks.length; i--;) {
             var risk = $scope.risks[i];

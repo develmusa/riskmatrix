@@ -1,103 +1,116 @@
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Risk Matrix Generator</title>
+    <meta charset="UTF-8">
+    <title>Risk Matrix Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <script language="javascript" type="text/javascript" src="js/vendor/p5.min.js"></script>
-  <script language="javascript" src="js/vendor/p5.dom.min.js"></script>
-  <script language="javascript" type="text/javascript" src="js/vendor/dat.gui.min.js"></script>
-  <script src="js/vendor/angular.min.js"></script>
-  <script src="js/vendor/xeditable.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script language="javascript" type="text/javascript" src="js/vendor/p5.min.js"></script>
+    <script language="javascript" src="js/vendor/p5.dom.min.js"></script>
+    <script language="javascript" type="text/javascript" src="js/vendor/dat.gui.min.js"></script>
+    <script src="js/vendor/angular.min.js"></script>
+    <script src="js/vendor/xeditable.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+    <script language="javascript" type="text/javascript" src="js/risk.js"></script>
+    <script language="javascript" type="text/javascript" src="js/sketch.js"></script>
+    <script language="javascript" type="text/javascript" src="js/rect.js"></script>
 
+    <script language="javascript" type="text/javascript" src="js/dialog.js"></script>
+    <script language="javascript" type="text/javascript" src="js/app.js"></script>
+    <script language="javascript" type="text/javascript" src="js/controllers/MainController.js"></script>
+    <script language="javascript" type="text/javascript" src="js/gui.js"></script>
 
-  <script language="javascript" type="text/javascript" src="js/risk.js"></script>
-  <script language="javascript" type="text/javascript" src="js/sketch.js"></script>
-  <script language="javascript" type="text/javascript" src="js/rect.js"></script>
-  <script language="javascript" type="text/javascript" src="js/gui.js"></script>
-  <script language="javascript" type="text/javascript" src="js/dialog.js"></script>
-  <script language="javascript" type="text/javascript" src="js/app.js"></script>
-  <script language="javascript" type="text/javascript" src="js/controllers/MainController.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/datGui.css">
+    <link rel="stylesheet" href="css/vendor/xeditable.css">
 
-  <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/datGui.css">
-  <link rel="stylesheet" href="css/vendor/xeditable.css">
-
-
-  <!-- Close warning -->
-  <script>
-      function verifyexit() { return 'Are you sure ?'; }           window.onbeforeunload = verifyexit;
-  </script>
-
-
-
+    <!-- Close warning -->
+    <script>
+        function verifyexit() {
+            return 'Are you sure ?';
+        }
+        window.onbeforeunload = verifyexit;
+    </script>
 </head>
-
 <body ng-app="matrix">
+<div id="dialog" title="Edit Risks" ng-controller="MainController">
+    <br>
+    <p>Here is the place to add your Risk with the corresponding weight.</p>
+    <div id="mainController" ng-controller="MainController">
+        <form editable-form name="tableform" onaftersave="saveTable()" oncancel="cancel()">
+            <!-- table -->
+            <table class="table table-bordered table-hover table-condensed">
+                <tr style="font-weight: bold">
+                    <td style="width:40%">Number</td>
+                    <td style="width:30%">Likelihood</td>
+                    <td style="width:30%">Consequence</td>
+                    <td style="width:30%">
+                        <span ng-show="tableform.$visible">Action</span></td>
+                </tr>
+                <tr ng-repeat="risk in risks | filter:filterRisks">
+                    <td>
+                        <!-- editable username (text with validation) -->
+                        <span text="risk.nr" e-form="tableform">
+                    {{ risk.nr || 'empty' }}
+                  </span>
+                    </td>
+                    <td>
+                        <!-- editable status (select-local) -->
+                        <span editable-text="risk.likelihood" e-form="tableform">
+                    {{ risk.likelihood }}
+                  </span>
+                    </td>
+                    <td>
+                        <!-- editable group (select-remote) -->
+                        <span editable-text="risk.consequence" e-form="tableform">
+                    {{ risk.consequence }}
+                  </span>
+                    </td>
+                    <td>
+                        <button type="button" ng-show="tableform.$visible" ng-click="deleteRisk(risk.nr)"
+                                class="btn btn-danger pull-right">Del
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <!-- buttons -->
+            <div class="btn-edit">
+                <button type="button" class="btn btn-default" ng-show="!tableform.$visible"
+                        ng-click="tableform.$show()">
+                    edit
+                </button>
+            </div>
+            <div class="btn-form" ng-show="tableform.$visible">
+                <button type="button" ng-click="addUser()" class="btn btn-default pull-right">add risk</button>
+                <button type="submit" class="btn btn-primary">save</button>
+                <button type="button" ng-click="tableform.$cancel()" class="btn btn-default">cancel</button>
+            </div>
 
-<div id="dialog" title="Edit Risks"  ng-controller="MainController">
-  <br>
-  <p>Here is the place to add your Risk with the corresponding weight.</p>
-  <div id="mainController" ng-controller="MainController">
-    <form editable-form name="tableform" onaftersave="saveTable()" oncancel="cancel()">
-
-      <!-- table -->
-      <table class="table table-bordered table-hover table-condensed">
-        <tr style="font-weight: bold">
-          <td style="width:40%">Number</td>
-          <td style="width:30%">Likelihood</td>
-          <td style="width:30%">Consequence</td>
-          <td style="width:30%">
-            <span ng-show="tableform.$visible">Action</span></td>
-        </tr>
-        <tr ng-repeat="risk in risks | filter:filterRisks">
-          <td>
-            <!-- editable username (text with validation) -->
-            <span text="risk.nr" e-form="tableform">
-            {{ risk.nr || 'empty' }}
-          </span>
-          </td>
-          <td>
-            <!-- editable status (select-local) -->
-            <span editable-text="risk.likelihood" e-form="tableform" >
-            {{ risk.likelihood }}
-          </span>
-          </td>
-          <td>
-            <!-- editable group (select-remote) -->
-            <span editable-text="risk.consequence" e-form="tableform" >
-            {{ risk.consequence }}
-          </span>
-          </td>
-          <td><button type="button" ng-show="tableform.$visible" ng-click="deleteRisk(risk.nr)" class="btn btn-danger pull-right">Del</button></td>
-        </tr>
-      </table>
-
-      <!-- buttons -->
-      <div class="btn-edit">
-        <button type="button" class="btn btn-default" ng-show="!tableform.$visible" ng-click="tableform.$show()">
-          edit
-        </button>
-      </div>
-      <div class="btn-form" ng-show="tableform.$visible">
-        <button type="button" ng-click="addUser()" class="btn btn-default pull-right">add risk</button>
-        <button type="submit" class="btn btn-primary">save</button>
-        <button type="button" ng-click="tableform.$cancel()" class="btn btn-default">cancel</button>
-      </div>
-
-    </form>
-  </div>
+        </form>
+    </div>
 </div>
-
-
-<div id=canvasHolder></div>
-
-
-
-
+<div class="header"></div>
+<div class="container">
+    <div class="page-header">
+        <h1>Risk Matrix Generator</h1>
+    </div>
+    <p class="lead">Create your own risk matrix with this generator. Edit the risks to your needs, customize the
+        appearance as you like and then save it for your use.</p>
+    <p>Click on "Open Controls" to customize your risk matrix.</p>
+    <div id="gui"></div>
+</div>
+<div id="canvasHolder" class="centerFlex">
+</div>
+<div class="centerFlex">
+    <p>Zoom for optimal quality.</p>
+</div>
+<footer class="footer">
+    <div class="container">
+        <a class="text-muted pull-right" href="https://github.com/develmusa/riskmatrix">Source on GitHub</a>
+    </div>
+</footer>
 </body>
 </html>
